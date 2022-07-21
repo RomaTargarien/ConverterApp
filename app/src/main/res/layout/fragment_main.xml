@@ -23,13 +23,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <LinearLayout
                     android:id="@+id/appCompatButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/shape_rouned_rectangle"
+                    android:minHeight="30dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="84dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/appCompatButton2">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvFlags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp" />
+
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/appCompatButton2"
@@ -38,7 +50,7 @@
                     android:onClick="@{view -> viewModel.onSortCurrencyButtonClicked()}"
                     android:text="Sort"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/appCompatButton"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <FrameLayout
@@ -46,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    app:layout_constraintTop_toBottomOf="@+id/appCompatButton2" />
+                    app:layout_constraintTop_toBottomOf="@+id/appCompatButton" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 

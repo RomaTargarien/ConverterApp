@@ -10,28 +10,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.converterapp.R
 import com.example.converterapp.databinding.FragmentMainBinding
 import com.example.converterapp.ui.screens.favourites.FavouritesCurrencyFragment
 import com.example.converterapp.ui.screens.popular.PopularCurrencyFragment
 import com.example.converterapp.util.Sorts
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private val sorterCurrencyRatesUpdater = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.getStringExtra(SORT_UPDATE_DATA)?.also {
-                Log.d("TAG",it)
+                viewModel.onReceiveSortedEvent(it)
             }
         }
     }
+    private lateinit var currencyChooserAdapter: CurrencyChooserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +63,12 @@ class MainFragment : Fragment() {
         if (savedInstanceState == null && childFragmentManager.fragments.size == 0) {
             binding.bottomNavigationView.selectedItemId = R.id.mi_home
         }
-
-
+        setUpRecyclerView()
+        lifecycleScope.launch {
+            viewModel.remoteRatesList.collect {
+                currencyChooserAdapter.submitList(it)
+            }
+        }
     }
 
     private fun getFragmentForTabId(tabId: Int): Fragment? {
@@ -76,6 +86,17 @@ class MainFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(sorterCurrencyRatesUpdater)
+    }
+
+    private fun setUpRecyclerView() {
+        currencyChooserAdapter = CurrencyChooserAdapter()
+        currencyChooserAdapter.setOnSortOptionListener {
+            viewModel.getRemoteCurrency(it.name)
+        }
+        binding.rvFlags.apply {
+            layoutManager = GridLayoutManager(requireContext(),13,GridLayoutManager.VERTICAL,false)
+            adapter = currencyChooserAdapter
+        }
     }
 
     companion object {

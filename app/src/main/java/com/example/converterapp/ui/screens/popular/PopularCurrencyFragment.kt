@@ -1,6 +1,7 @@
 package com.example.converterapp.ui.screens.popular
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import com.example.converterapp.ui.screens.CurrencyAdapter
 import com.example.converterapp.ui.screens.MainViewModel
 import com.example.converterapp.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,19 +35,14 @@ class PopularCurrencyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    override fun onResume() {
-        super.onResume()
+        setUpRecyclerView()
         lifecycleScope.launch {
-            mainViewModel.remoteCurrencyFlow.collectLatest { result ->
+            mainViewModel.remoteCurrencyFlow.collect { result ->
                 when (result) {
                     is Resource.Loading -> {
 
                     }
                     is Resource.Success -> {
-                        setUpRecyclerView()
                         result.data?.let { list ->
                             currencyAdapter.submitList(list)
                         }
@@ -56,6 +54,7 @@ class PopularCurrencyFragment : Fragment() {
             }
         }
     }
+
 
     private fun setUpRecyclerView() {
         currencyAdapter = CurrencyAdapter()

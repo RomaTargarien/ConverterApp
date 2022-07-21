@@ -11,9 +11,9 @@ class CurrencyRepository @Inject constructor(
     private val currencyApi: CurrencyApi
 ) : ICurrencyRepository {
 
-    override suspend fun getCurrency() = withContext(Dispatchers.IO) {
+    override suspend fun getCurrency(currencyName: String) = withContext(Dispatchers.IO) {
         try {
-            val result = currencyApi.getCurrency()
+            val result = currencyApi.getCurrency(currencyName)
             Resource.Success(result)
         } catch (e: IOException) {
             Resource.Error(e.localizedMessage)
