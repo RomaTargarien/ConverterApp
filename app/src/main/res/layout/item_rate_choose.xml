@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="rate"
+            type="com.example.converterapp.model.ui.Rate" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,22 +15,25 @@
         android:layout_height="40dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv_content"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:cardCornerRadius="30dp"
+            android:id="@+id/container"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/ivRateIconFlag"
-                android:layout_width="match_parent"
-                android:scaleType="centerInside"
-                android:layout_height="match_parent" />
-
+                android:id="@+id/ivFlag"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:adjustViewBounds="true"
+                app:loadImageUrl="@{rate.iconUrl}"
+                android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

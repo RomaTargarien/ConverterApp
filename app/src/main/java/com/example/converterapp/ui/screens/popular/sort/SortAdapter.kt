@@ -35,13 +35,11 @@ class SortAdapter : ListAdapter<SortOption, SortAdapter.ViewHolder>(DiffCallback
 
     inner class ViewHolder(val binding: ItemSortOptionBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private var startContainerColor: Int
-        private var endContainerColor: Int
+        private var startContainerColor: Int = ContextCompat.getColor(itemView.context, R.color.white)
+        private var endContainerColor: Int = ContextCompat.getColor(itemView.context, R.color.dark_pink)
         private lateinit var sortOption: SortOption
 
         init {
-            startContainerColor = ContextCompat.getColor(itemView.context, R.color.white)
-            endContainerColor = ContextCompat.getColor(itemView.context, R.color.dark_pink)
             binding.container.setOnClickListener {
                 onSortOptionClicked?.invoke(sortOption)
             }
@@ -49,7 +47,7 @@ class SortAdapter : ListAdapter<SortOption, SortAdapter.ViewHolder>(DiffCallback
 
         fun bind(sortOption: SortOption) {
             this.sortOption = sortOption
-            binding.tvSortTitle.text = sortOption.sortOption.name
+            binding.tvSortTitle.text = sortOption.sortOption.uiName
             binding.container.apply {
                 setBackgroundColor(if (sortOption.isChecked) endContainerColor else startContainerColor)
             }

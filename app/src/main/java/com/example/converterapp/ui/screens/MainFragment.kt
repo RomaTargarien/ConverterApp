@@ -5,22 +5,21 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.converterapp.ui.decorators.VerticalItemVerticalDecoration
 import com.example.converterapp.R
 import com.example.converterapp.databinding.FragmentMainBinding
 import com.example.converterapp.ui.screens.favourites.FavouritesCurrencyFragment
 import com.example.converterapp.ui.screens.popular.PopularCurrencyFragment
-import com.example.converterapp.util.Sorts
+import com.example.converterapp.util.ext.createFlagUrl
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -54,20 +53,64 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        setUpBottomNavigation(savedInstanceState)
+        setUpRecyclerView()
+        observeRateChooserList()
+        observeCurrentCurrency()
+    }
+
+    private fun setUpBottomNavigation(savedInstanceState: Bundle?) {
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             getFragmentForTabId(item.itemId)?.run {
+                changeTitleText(this)
                 replaceFragment(this); true
             } ?: false
         }
         if (savedInstanceState == null && childFragmentManager.fragments.size == 0) {
             binding.bottomNavigationView.selectedItemId = R.id.mi_home
         }
-        setUpRecyclerView()
+    }
+
+    private fun setUpRecyclerView() {
+        currencyChooserAdapter = CurrencyChooserAdapter()
+        currencyChooserAdapter.setOnRateClickedListener { rate ->
+            viewModel.getRemoteCurrency(rate.name)
+        }
+        binding.rvFlags.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(VerticalItemVerticalDecoration(10, 10))
+            adapter = currencyChooserAdapter
+        }
+    }
+
+    private fun observeRateChooserList() {
         lifecycleScope.launch {
-            viewModel.remoteRatesList.collect {
+            viewModel.flagsFlow.collect {
                 currencyChooserAdapter.submitList(it)
             }
+        }
+    }
+
+    private fun observeCurrentCurrency() {
+        lifecycleScope.launch {
+            viewModel.currentCurrencyFlow.collect {
+                Picasso.get().load(it.createFlagUrl())
+                    .error(R.drawable.ic_icon_pirate_flag)
+                    .into(binding.ivCurrentRateFlag)
+                binding.tvCurrentRate.text = it
+            }
+        }
+    }
+
+    private fun changeTitleText(fragment: Fragment) {
+        if (fragment is PopularCurrencyFragment) {
+            TransitionManager.beginDelayedTransition(binding.tabContainer)
+            binding.tvRates.text = resources.getString(R.string.my_rates)
+        }
+        if (fragment is FavouritesCurrencyFragment) {
+            TransitionManager.beginDelayedTransition(binding.tabContainer)
+            binding.tvRates.text = resources.getString(R.string.saved_rates)
         }
     }
 
@@ -86,17 +129,6 @@ class MainFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(sorterCurrencyRatesUpdater)
-    }
-
-    private fun setUpRecyclerView() {
-        currencyChooserAdapter = CurrencyChooserAdapter()
-        currencyChooserAdapter.setOnSortOptionListener {
-            viewModel.getRemoteCurrency(it.name)
-        }
-        binding.rvFlags.apply {
-            layoutManager = GridLayoutManager(requireContext(),13,GridLayoutManager.VERTICAL,false)
-            adapter = currencyChooserAdapter
-        }
     }
 
     companion object {

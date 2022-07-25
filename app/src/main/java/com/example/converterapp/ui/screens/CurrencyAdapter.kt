@@ -9,9 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.converterapp.R
 import com.example.converterapp.databinding.ItemRateBinding
 import com.example.converterapp.model.ui.Rate
-import com.squareup.picasso.Picasso
 
 class CurrencyAdapter : ListAdapter<Rate, CurrencyAdapter.ViewHolder>(DiffCallback()) {
+
+    private var onSaveCurrencyButtonClicked: ((Rate) -> Unit)? = null
+    fun setOnSaveCurrencyListener(listener: (Rate) -> Unit) {
+        onSaveCurrencyButtonClicked = listener
+    }
+
+    private var onDeleteCurrencyButtonClicked: ((Rate) -> Unit)? = null
+    fun setOnDeleteCurrencyButtonClicked(listener: (Rate) -> Unit) {
+        onDeleteCurrencyButtonClicked = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(ItemRateBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -20,18 +29,51 @@ class CurrencyAdapter : ListAdapter<Rate, CurrencyAdapter.ViewHolder>(DiffCallba
         holder.bind(currentList[position])
     }
 
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            holder.bind(currentList[position])
+        } else {
+            holder.bind(currentList[position], payloads)
+        }
+    }
+
     inner class ViewHolder(val binding: ItemRateBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        private lateinit var rate: Rate
+
+        init {
+            binding.ivSaveRate.setOnClickListener {
+                if (rate.isSaved) {
+                    onDeleteCurrencyButtonClicked?.invoke(rate)
+                } else {
+                    onSaveCurrencyButtonClicked?.invoke(rate)
+                }
+            }
+        }
+
         fun bind(rate: Rate) {
+            this.rate = rate
             binding.rate = rate
-            Picasso.get().load("https://www.countryflagicons.com/FLAT/64/${rate.name.subSequence(0..1)}.png")
-                .error(R.drawable.ic_icon_home)
-                .into(binding.ivRateIconFlag)
+            binding.ivSaveRate.setImageResource(if (rate.isSaved) R.drawable.ic_icon_favourites_fill_dark_pink else R.drawable.ic_icon_favourites)
+        }
+
+        fun bind(rate: Rate, payloads: List<Any>) {
+            this.rate = rate
+            binding.ivSaveRate.setImageResource(
+                if (payloads.last() as Boolean) R.drawable.ic_icon_favourites_fill_dark_pink
+                else R.drawable.ic_icon_favourites
+            )
         }
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Rate>() {
-        override fun areItemsTheSame(oldItem: Rate, newItem: Rate): Boolean = oldItem.hashCode() == newItem.hashCode()
+        override fun areItemsTheSame(oldItem: Rate, newItem: Rate): Boolean = (oldItem.name == newItem.name && oldItem.value == newItem.value)
 
-        override fun areContentsTheSame(oldItem: Rate, newItem: Rate): Boolean = oldItem == newItem
+        override fun areContentsTheSame(oldItem: Rate, newItem: Rate): Boolean = (oldItem.isSaved == newItem.isSaved)
+
+        override fun getChangePayload(oldItem: Rate, newItem: Rate): Any? {
+            if (oldItem.isSaved != newItem.isSaved) return newItem.isSaved
+            return super.getChangePayload(oldItem, newItem)
+        }
     }
 }

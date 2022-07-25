@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.converterapp.R
 import com.example.converterapp.databinding.ItemRateChooseBinding
 import com.example.converterapp.model.ui.Rate
@@ -13,9 +15,9 @@ import com.squareup.picasso.Picasso
 
 class CurrencyChooserAdapter : ListAdapter<Rate, CurrencyChooserAdapter.ViewHolder>(DiffCallback()) {
 
-    private var onSortOptionClicked: ((Rate) -> Unit)? = null
-    fun setOnSortOptionListener(listener: (Rate) -> Unit) {
-        onSortOptionClicked = listener
+    private var onRateClicked: ((Rate) -> Unit)? = null
+    fun setOnRateClickedListener(listener: (Rate) -> Unit) {
+        onRateClicked = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -27,11 +29,9 @@ class CurrencyChooserAdapter : ListAdapter<Rate, CurrencyChooserAdapter.ViewHold
 
     inner class ViewHolder(val binding: ItemRateChooseBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(rate: Rate) {
-            Picasso.get().load("https://www.countryflagicons.com/FLAT/64/${rate.name.subSequence(0..1)}.png")
-                .error(R.drawable.ic_icon_home)
-                .into(binding.ivRateIconFlag)
-            binding.cvContent.setOnClickListener {
-                onSortOptionClicked?.invoke(rate)
+            binding.rate = rate
+            binding.container.setOnClickListener {
+                onRateClicked?.invoke(rate)
             }
         }
     }

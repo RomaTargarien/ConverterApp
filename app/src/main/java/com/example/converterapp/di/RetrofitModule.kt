@@ -1,6 +1,7 @@
 package com.example.converterapp.di
 
 import com.example.converterapp.data.remote.CurrencyApi
+import com.example.converterapp.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +21,7 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideClient(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.exchangerate.host/")
+        .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 }

@@ -4,15 +4,20 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/bnv_button_star.xml" value="0.282" />
+        <entry key="app/src/main/res/drawable/bnv_button_favourites.xml" value="0.232" />
         <entry key="app/src/main/res/drawable/bnv_button_home.xml" value="0.282" />
         <entry key="app/src/main/res/drawable/bnv_button_star.xml" value="0.282" />
         <entry key="app/src/main/res/drawable/ic_baseline_dehaze_24.xml" value="0.265" />
+        <entry key="app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.232" />
         <entry key="app/src/main/res/drawable/ic_baseline_star_outline_.xml" value="0.282" />
         <entry key="app/src/main/res/drawable/ic_baseline_star_outline_24.xml" value="0.282" />
+        <entry key="app/src/main/res/drawable/ic_icon_arrow_to_right.xml" value="0.232" />
         <entry key="app/src/main/res/drawable/ic_icon_favourites.xml" value="0.266" />
+        <entry key="app/src/main/res/drawable/ic_icon_favourites_fill_dark_pink.xml" value="0.266" />
         <entry key="app/src/main/res/drawable/ic_icon_favourites_pink.xml" value="0.266" />
         <entry key="app/src/main/res/drawable/ic_icon_home.xml" value="0.265" />
         <entry key="app/src/main/res/drawable/ic_icon_home_orange.xml" value="0.266" />
+        <entry key="app/src/main/res/drawable/shape_rounded_top.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/shape_rouned_rectangle.xml" value="0.266" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30625" />
         <entry key="app/src/main/res/layout/fragment_favourites_currency.xml" value="0.3203125" />
@@ -21,9 +26,11 @@
         <entry key="app/src/main/res/layout/fragment_sort_currency.xml" value="0.3203125" />
         <entry key="app/src/main/res/layout/item_rate.xml" value="0.3203125" />
         <entry key="app/src/main/res/layout/item_rate_choose.xml" value="0.3203125" />
+        <entry key="app/src/main/res/layout/item_rate_saved.xml" value="0.3203125" />
         <entry key="app/src/main/res/layout/item_sort_option.xml" value="0.3203125" />
         <entry key="app/src/main/res/layout/shape_rounded_rectangle.xml" value="0.3203125" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.22" />
+        <entry key="app/src/main/res/menu/sort_menu.xml" value="0.3203125" />
       </map>
     </option>
   </component>

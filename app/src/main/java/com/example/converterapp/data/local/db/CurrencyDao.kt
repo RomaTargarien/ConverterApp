@@ -15,4 +15,7 @@ interface CurrencyDao {
 
     @Query("SELECT * FROM savedCurrencies")
     fun getAllCurrency(): Flow<List<CurrencySaved>>
+
+    @Query("SELECT * FROM savedCurrencies WHERE fromCurrencyName LIKE :fromRate AND toCurrencyName LIKE :toRate")
+    fun getCurrency(fromRate: String, toRate: String): List<CurrencySaved>
 }

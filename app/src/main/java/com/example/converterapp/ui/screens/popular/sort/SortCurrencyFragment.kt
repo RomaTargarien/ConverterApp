@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 class SortCurrencyFragment : Fragment() {
 
     private lateinit var binding: FragmentSortCurrencyBinding
-    private val viewModel: SortCurrencyViewModel by viewModels()
     private lateinit var sortAdapter: SortAdapter
+    private val viewModel: SortCurrencyViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +28,10 @@ class SortCurrencyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         setUpRecyclerView()
+        observeSavedCurrency()
+    }
+
+    private fun observeSavedCurrency() {
         lifecycleScope.launch {
             viewModel.sorts.collect { list ->
                 sortAdapter.submitList(list)
@@ -41,7 +45,7 @@ class SortCurrencyFragment : Fragment() {
             viewModel.onCheckBoxClicked(it)
         }
         binding.rvSorts.apply {
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = sortAdapter
         }
     }
