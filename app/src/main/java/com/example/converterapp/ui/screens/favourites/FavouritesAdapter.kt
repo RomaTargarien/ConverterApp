@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.converterapp.databinding.ItemRateSavedBinding
 import com.example.converterapp.model.db.CurrencySaved
 
-class CurrencyFavouritesAdapter : ListAdapter<CurrencySaved, CurrencyFavouritesAdapter.ViewHolder>(DiffCallback()) {
+class FavouritesAdapter : ListAdapter<CurrencySaved, FavouritesAdapter.ViewHolder>(DiffCallback()) {
 
     private var onDeleteCurrencyButtonClicked: ((CurrencySaved) -> Unit)? = null
     fun setOnDeleteCurrencyListener(listener: (CurrencySaved) -> Unit) {

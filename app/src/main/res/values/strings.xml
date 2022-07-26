@@ -1,13 +1,28 @@
 <resources>
     <string name="app_name">ConverterApp</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Bottom Navigation View -->
     <string name="bnv_menu_home">Home</string>
     <string name="bnv_menu_favourites">Favourites</string>
+
+    <!-- Toolbar Menu -->
+    <string name="sort">Sort</string>
+
+    <!-- Main Screen -->
     <string name="current_rate">Current Rate</string>
     <string name="change_current_rate">Change current Rate</string>
-    <string name="retry">Retry</string>
     <string name="my_rates">My Rates</string>
     <string name="saved_rates">Saved Rates</string>
-    <string name="sort">Sort</string>
+
+    <!-- Home Screen -->
+    <string name="retry">Retry</string>
+
+    <!-- Favourite Screen -->
+    <string name="no_results">No results</string>
+
+    <!-- Extra-->
+    <string name="flag">flag</string>
+    <string name="arrow">arrow</string>
+    <string name="delete">delete</string>
+
 </resources>

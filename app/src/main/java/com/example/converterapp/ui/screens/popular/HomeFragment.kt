@@ -10,8 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.converterapp.databinding.FragmentHomeBinding
 import com.example.converterapp.ui.decorators.HorizontalItemDecoration
-import com.example.converterapp.databinding.FragmentPopularCurrencyBinding
 import com.example.converterapp.ui.screens.CurrencyAdapter
 import com.example.converterapp.ui.screens.MainViewModel
 import com.example.converterapp.util.Resource
@@ -19,22 +19,26 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PopularCurrencyFragment : Fragment() {
+class HomeFragment : Fragment() {
 
-    private lateinit var binding: FragmentPopularCurrencyBinding
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var currencyAdapter: CurrencyAdapter
-    private val viewModel: PopularCurrencyViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentPopularCurrencyBinding.inflate(inflater, container, false).also { binding = it }.root
+    ): View = FragmentHomeBinding.inflate(inflater, container, false).also { binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpRecyclerView()
         binding.mainViewModel = mainViewModel
+        setUpRecyclerView()
+        observeRemoteCurrencyData()
+    }
+
+    private fun observeRemoteCurrencyData() {
         lifecycleScope.launch {
             mainViewModel.remoteCurrencyFlow.collect { result ->
                 when (result) {
@@ -67,7 +71,7 @@ class PopularCurrencyFragment : Fragment() {
         currencyAdapter.setOnSaveCurrencyListener {
             viewModel.onSaveCurrencyClicked(it)
         }
-        currencyAdapter.setOnDeleteCurrencyButtonClicked {
+        currencyAdapter.setOnDeleteCurrencyClicked {
             viewModel.onDeleteCurrencyClicked(it)
         }
         binding.rvPopular.apply {

@@ -3,24 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="rate"
             type="com.example.converterapp.model.ui.Rate" />
-
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="40dp"
-        android:layout_height="40dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/container"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            app:cardCornerRadius="20dp"
+            android:layout_width="@dimen/card_icon_width_small"
+            android:layout_height="@dimen/card_icon_height_small"
+            app:cardCornerRadius="@dimen/card_corner_radius_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,12 +24,12 @@
 
             <ImageView
                 android:id="@+id/ivFlag"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="@dimen/card_icon_image_width_small"
+                android:layout_height="@dimen/card_icon_image_height_small"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:adjustViewBounds="true"
                 app:loadImageUrl="@{rate.iconUrl}"
-                android:scaleType="centerCrop" />
+                android:contentDescription="@string/flag"/>
         </androidx.cardview.widget.CardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 </layout>

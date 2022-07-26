@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavouritesCurrencyViewModel @Inject constructor(
+class FavouritesViewModel @Inject constructor(
     private val localCurrencyRepository: ILocalCurrencyRepository
 ) : ViewModel() {
 

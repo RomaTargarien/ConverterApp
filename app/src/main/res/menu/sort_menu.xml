@@ -6,6 +6,6 @@
         android:id="@+id/mi_sort"
         android:title="@string/sort"
         app:showAsAction="always"
-        android:icon="@drawable/ic_baseline_sort_24"/>
+        android:icon="@drawable/ic_baseline_sort"/>
 
 </menu>

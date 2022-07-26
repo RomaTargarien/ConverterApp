@@ -12,14 +12,14 @@ import com.example.converterapp.model.ui.Rate
 
 class CurrencyAdapter : ListAdapter<Rate, CurrencyAdapter.ViewHolder>(DiffCallback()) {
 
-    private var onSaveCurrencyButtonClicked: ((Rate) -> Unit)? = null
+    private var onSaveCurrencyClicked: ((Rate) -> Unit)? = null
     fun setOnSaveCurrencyListener(listener: (Rate) -> Unit) {
-        onSaveCurrencyButtonClicked = listener
+        onSaveCurrencyClicked = listener
     }
 
-    private var onDeleteCurrencyButtonClicked: ((Rate) -> Unit)? = null
-    fun setOnDeleteCurrencyButtonClicked(listener: (Rate) -> Unit) {
-        onDeleteCurrencyButtonClicked = listener
+    private var onDeleteCurrencyClicked: ((Rate) -> Unit)? = null
+    fun setOnDeleteCurrencyClicked(listener: (Rate) -> Unit) {
+        onDeleteCurrencyClicked = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -44,9 +44,9 @@ class CurrencyAdapter : ListAdapter<Rate, CurrencyAdapter.ViewHolder>(DiffCallba
         init {
             binding.ivSaveRate.setOnClickListener {
                 if (rate.isSaved) {
-                    onDeleteCurrencyButtonClicked?.invoke(rate)
+                    onDeleteCurrencyClicked?.invoke(rate)
                 } else {
-                    onSaveCurrencyButtonClicked?.invoke(rate)
+                    onSaveCurrencyClicked?.invoke(rate)
                 }
             }
         }
@@ -54,14 +54,17 @@ class CurrencyAdapter : ListAdapter<Rate, CurrencyAdapter.ViewHolder>(DiffCallba
         fun bind(rate: Rate) {
             this.rate = rate
             binding.rate = rate
-            binding.ivSaveRate.setImageResource(if (rate.isSaved) R.drawable.ic_icon_favourites_fill_dark_pink else R.drawable.ic_icon_favourites)
+            binding.ivSaveRate.setImageResource(
+                if (rate.isSaved) R.drawable.ic_baseline_favourites_fill_dark_pink
+                else R.drawable.ic_baseline_favourites_gray
+            )
         }
 
         fun bind(rate: Rate, payloads: List<Any>) {
             this.rate = rate
             binding.ivSaveRate.setImageResource(
-                if (payloads.last() as Boolean) R.drawable.ic_icon_favourites_fill_dark_pink
-                else R.drawable.ic_icon_favourites
+                if (payloads.last() as Boolean) R.drawable.ic_baseline_favourites_fill_dark_pink
+                else R.drawable.ic_baseline_favourites_gray
             )
         }
     }

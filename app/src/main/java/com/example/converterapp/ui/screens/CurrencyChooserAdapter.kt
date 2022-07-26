@@ -5,13 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.transform.CircleCropTransformation
-import com.example.converterapp.R
 import com.example.converterapp.databinding.ItemRateChooseBinding
 import com.example.converterapp.model.ui.Rate
-import com.example.converterapp.model.ui.SortOption
-import com.squareup.picasso.Picasso
 
 class CurrencyChooserAdapter : ListAdapter<Rate, CurrencyChooserAdapter.ViewHolder>(DiffCallback()) {
 

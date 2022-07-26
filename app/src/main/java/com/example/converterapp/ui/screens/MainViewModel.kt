@@ -9,7 +9,7 @@ import com.example.converterapp.repositories.local.ILocalCurrencyRepository
 import com.example.converterapp.repositories.remote.ICurrencyRepository
 import com.example.converterapp.ui.Screens
 import com.example.converterapp.util.Constants
-import com.example.converterapp.util.RatesListCreator
+import com.example.converterapp.util.DataHelper
 import com.example.converterapp.util.Resource
 import com.github.terrakok.cicerone.Router
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,12 +36,12 @@ class MainViewModel @Inject constructor(
     private val sortedOptionFlow: MutableStateFlow<String> = MutableStateFlow(userPreferences.sortedOption)
     private val remoteRatesList: MutableStateFlow<List<Rate>> = MutableStateFlow(emptyList())
 
-    private val _currentCurrencyFlow: MutableStateFlow<String> =
-        MutableStateFlow(userPreferences.lastSelectedCurrency.ifEmpty { Constants.DEFAULT_CURRENCY })
+    private val _currentCurrencyFlow: MutableStateFlow<String> = MutableStateFlow(userPreferences.lastSelectedCurrency.ifEmpty { Constants.DEFAULT_CURRENCY })
     val currentCurrencyFlow: StateFlow<String> = _currentCurrencyFlow
 
     private val _flagsFlow: MutableStateFlow<List<Rate>> = MutableStateFlow(emptyList())
     val flagsFlow: StateFlow<List<Rate>> = _flagsFlow
+
     private var wasFlagsSubmitted: Boolean = false
 
     init {
@@ -82,14 +82,14 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch { sortedOptionFlow.emit(sortName) }
     }
 
-    fun onSortCurrencyButtonClicked() {
+    fun navigateToSortScreen() {
         router.navigateTo(Screens.sortScreen())
     }
 
     private fun observeData() {
         viewModelScope.launch {
             combine(remoteRatesList, localCurrencyFlow, sortedOptionFlow) { remote, local, sortOption ->
-                RatesListCreator.processData(remote, local, sortOption, userPreferences.lastSelectedCurrency)
+                DataHelper.combineRemoteAndLocalData(remote, local, sortOption, userPreferences.lastSelectedCurrency)
             }.collect {
                 if (it.isNotEmpty()) {
                     _remoteCurrencyFlow.emit(Resource.Success(it))

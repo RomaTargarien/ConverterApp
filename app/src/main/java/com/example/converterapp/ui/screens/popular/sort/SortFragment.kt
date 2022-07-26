@@ -8,25 +8,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.converterapp.databinding.FragmentSortCurrencyBinding
+import com.example.converterapp.databinding.FragmentSortBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SortCurrencyFragment : Fragment() {
+class SortFragment : Fragment() {
 
-    private lateinit var binding: FragmentSortCurrencyBinding
+    private lateinit var binding: FragmentSortBinding
     private lateinit var sortAdapter: SortAdapter
-    private val viewModel: SortCurrencyViewModel by viewModels()
+    private val viewModel: SortViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentSortCurrencyBinding.inflate(inflater, container, false).also { binding = it }.root
+    ): View = FragmentSortBinding.inflate(inflater, container, false).also { binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = viewModel
         setUpRecyclerView()
         observeSavedCurrency()
     }

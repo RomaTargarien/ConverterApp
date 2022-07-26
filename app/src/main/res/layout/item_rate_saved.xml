@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="currency"
             type="com.example.converterapp.model.db.CurrencySaved" />
@@ -10,83 +12,83 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_regular_and_half"
+        android:paddingTop="@dimen/margin_regular_half"
+        android:paddingEnd="@dimen/margin_regular_and_half"
+        android:paddingBottom="@dimen/margin_regular_half">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
-            app:cardCornerRadius="25dp"
+            android:layout_width="@dimen/card_icon_width"
+            android:layout_height="@dimen/card_icon_height"
+            app:cardCornerRadius="@dimen/card_corner_radius"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/ivFromRateFlag"
-                android:layout_width="85dp"
-                android:layout_height="85dp"
+                android:layout_width="@dimen/card_icon_image_width"
+                android:layout_height="@dimen/card_icon_image_height"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:adjustViewBounds="true"
                 app:loadImageUrl="@{currency.fromCurrencyFlagUrl}"
-                android:scaleType="centerCrop" />
+                android:contentDescription="@string/flag" />
+
         </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/ivArrow"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="5dp"
-            android:src="@drawable/ic_icon_arrow_to_right"
+            android:layout_marginStart="@dimen/margin_regular_one_quarter"
+            android:contentDescription="@string/arrow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardView"
+            android:src="@drawable/ic_baseline_arrow_to_right"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
-            android:layout_width="50dp"
-            android:layout_marginStart="5dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            app:cardCornerRadius="25dp"
+            android:layout_width="@dimen/card_icon_width"
+            android:layout_height="@dimen/card_icon_height"
+            android:layout_marginStart="@dimen/margin_regular_one_quarter"
+            app:cardCornerRadius="@dimen/card_corner_radius"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivArrow"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/ivToRateFlag"
-                android:layout_width="85dp"
-                android:layout_height="85dp"
+                android:layout_width="@dimen/card_icon_image_width"
+                android:layout_height="@dimen/card_icon_image_height"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:adjustViewBounds="true"
                 app:loadImageUrl="@{currency.toCurrencyFlagUrl}"
-                android:scaleType="centerCrop" />
+                android:contentDescription="@string/flag" />
+
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tvValue"
+            style="@style/SubTitleTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:text="@{String.valueOf(currency.value)}"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="@dimen/margin_regular_and_half"
             app:layout_constraintEnd_toStartOf="@+id/ivDelete"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="74327.323" />
 
         <ImageView
             android:id="@+id/ivDelete"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/ic_baseline_delete_24"
+            android:contentDescription="@string/delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_baseline_delete"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

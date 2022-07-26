@@ -6,19 +6,19 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.transition.TransitionManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.converterapp.ui.decorators.VerticalItemVerticalDecoration
 import com.example.converterapp.R
 import com.example.converterapp.databinding.FragmentMainBinding
-import com.example.converterapp.ui.screens.favourites.FavouritesCurrencyFragment
-import com.example.converterapp.ui.screens.popular.PopularCurrencyFragment
+import com.example.converterapp.ui.screens.favourites.FavouritesFragment
+import com.example.converterapp.ui.screens.popular.HomeFragment
 import com.example.converterapp.util.ext.createFlagUrl
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    private lateinit var currencyChooserAdapter: CurrencyChooserAdapter
     private val viewModel: MainViewModel by activityViewModels()
     private val sorterCurrencyRatesUpdater = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -36,7 +37,6 @@ class MainFragment : Fragment() {
             }
         }
     }
-    private lateinit var currencyChooserAdapter: CurrencyChooserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +53,29 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        setUpMenu()
         setUpBottomNavigation(savedInstanceState)
         setUpRecyclerView()
         observeRateChooserList()
         observeCurrentCurrency()
+    }
+
+    private fun setUpMenu() {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.sort_menu,menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when(menuItem.itemId) {
+                    R.id.mi_sort -> {
+                        viewModel.navigateToSortScreen()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        },viewLifecycleOwner,Lifecycle.State.RESUMED)
     }
 
     private fun setUpBottomNavigation(savedInstanceState: Bundle?) {
@@ -104,11 +123,11 @@ class MainFragment : Fragment() {
     }
 
     private fun changeTitleText(fragment: Fragment) {
-        if (fragment is PopularCurrencyFragment) {
+        if (fragment is HomeFragment) {
             TransitionManager.beginDelayedTransition(binding.tabContainer)
             binding.tvRates.text = resources.getString(R.string.my_rates)
         }
-        if (fragment is FavouritesCurrencyFragment) {
+        if (fragment is FavouritesFragment) {
             TransitionManager.beginDelayedTransition(binding.tabContainer)
             binding.tvRates.text = resources.getString(R.string.saved_rates)
         }
@@ -116,8 +135,8 @@ class MainFragment : Fragment() {
 
     private fun getFragmentForTabId(tabId: Int): Fragment? {
         return when (tabId) {
-            R.id.mi_home -> PopularCurrencyFragment()
-            R.id.mi_favourites -> FavouritesCurrencyFragment()
+            R.id.mi_home -> HomeFragment()
+            R.id.mi_favourites -> FavouritesFragment()
             else -> null
         }
     }

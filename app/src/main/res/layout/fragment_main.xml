@@ -12,48 +12,59 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/light_black"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/light_black">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_regular_and_half" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_regular_and_half" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/margin_regular_and_half"
             android:text="@string/current_rate"
             android:textColor="@color/gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="@dimen/text_title"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            app:cardCornerRadius="30dp"
-            app:layout_constraintStart_toStartOf="@+id/textView"
+            android:layout_width="@dimen/card_icon_width_large"
+            android:layout_height="@dimen/card_icon_width_large"
+            android:layout_marginTop="@dimen/margin_regular_three_quarters"
+            app:cardCornerRadius="@dimen/card_corner_radius_large"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
             <ImageView
                 android:id="@+id/ivCurrentRateFlag"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/card_icon_image_width_large"
+                android:layout_height="@dimen/card_icon_image_height_large"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
+                android:contentDescription="@string/flag" />
+
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tvCurrentRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="@dimen/margin_regular_and_half"
             android:textColor="@color/white"
-            android:textSize="32sp"
+            android:textSize="@dimen/text_title_extra_huge"
             app:layout_constraintBottom_toBottomOf="@+id/cardView2"
             app:layout_constraintStart_toEndOf="@+id/cardView2"
             app:layout_constraintTop_toTopOf="@+id/cardView2"
@@ -63,73 +74,59 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/margin_regular_three_quarters"
             android:text="@string/change_current_rate"
             android:textColor="@color/gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="@dimen/text_title"
+            app:layout_constraintStart_toStartOf="@id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
         <LinearLayout
             android:id="@+id/appCompatButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="60dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/shape_rouned_rectangle"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/margin_regular_and_half"
+            android:background="@drawable/shape_rounded_rectangle"
+            android:gravity="center_vertical"
+            android:padding="1dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/textView3">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvFlags"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="1dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="1dp"
-                android:paddingBottom="8dp" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/margin_regular_half"
+                android:paddingBottom="@dimen/margin_regular_half" />
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="20dp"
-            android:onClick="@{view -> viewModel.onSortCurrencyButtonClicked()}"
-            android:src="@drawable/ic_baseline_sort_24"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/tab_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/shape_rounded_top"
+            android:layout_marginTop="@dimen/margin_regular_doubled"
+            android:background="@drawable/shape_rounded_rectangle_top"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintTop_toBottomOf="@+id/appCompatButton">
 
             <TextView
                 android:id="@+id/tvRates"
+                style="@style/SubTitleTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:text="My Rates"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:layout_marginStart="@dimen/margin_regular_and_half"
+                android:layout_marginTop="@dimen/margin_regular_and_half"
+                android:textSize="@dimen/text_title_huge"
+                android:text="@string/my_rates"/>
 
             <FrameLayout
                 android:id="@+id/tab_content"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/margin_regular"
                 android:layout_weight="1"
                 app:layout_constraintTop_toBottomOf="@+id/appCompatButton" />
 
@@ -139,9 +136,8 @@
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FBFBFB"
-            app:itemIconSize="32dp"
-            app:itemRippleColor="@color/gray"
+            android:background="@color/white_main"
+            app:itemIconSize="@dimen/bnv_item_icon_size"
             app:labelVisibilityMode="unlabeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/navigation_menu" />

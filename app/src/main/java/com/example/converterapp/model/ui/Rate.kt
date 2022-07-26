@@ -4,5 +4,6 @@ data class Rate(
     val name: String,
     val value: Double,
     val iconUrl: String,
-    var isSaved: Boolean = false
+    var isSaved: Boolean = false,
+    var wasAnimated: Boolean = false
 )
