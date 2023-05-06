@@ -1,4 +1,4 @@
-# Conerter App
+# Converter App
 
 An app to see currency
 
